@@ -1,28 +1,67 @@
-<template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld/>
-  </div>
-</template>
-
 <script>
-import HelloWorld from './components/HelloWorld'
+import Search from "@/components/Search";
+import Result from "@/components/Result";
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+    data() {
+        return {
+            items: [],
+            loadProgress: false,
+        };
+    },
+    methods: {
+        onLoadstart() {
+            this.loadProgress = true;
+        },
+        onLoadComplete({ results }) {
+            this.items = results;
+            this.loadProgress = false;
+        },
+    },
+    components: {
+        Search,
+        Result,
+    },
+};
 </script>
 
+<template>
+    <div class="root">
+        <Search class="search" @loadStart="onLoadStart" @loadComplete="onLoadComplete"/>
+        <Result :items="items" :loadProgress="loadProgress"/>
+    </div>
+</template>
+
+<style scoped>
+.root {
+    padding-top: 70px;
+}
+
+.search {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+</style>
+
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+html {
+    font-size: 62.5%;
+}
+
+body {
+    margin: 0;
+    color: #35495e;
+}
+
+p {
+    margin: 0;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
 }
 </style>
